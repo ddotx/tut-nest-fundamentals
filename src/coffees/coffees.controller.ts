@@ -8,20 +8,23 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Res,
 } from '@nestjs/common';
 import { CoffeeService } from 'src/coffees/coffee.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto/update-coffee.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeeService: CoffeeService) {}
 
   @Get() // ('flavors')
-  findAll() {
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
     // return 'This action returns all coffees';
-    return this.coffeeService.findAll();
+    // return this.coffeeService.findAll();
+    return this.coffeeService.findAll(paginationQuery);
   }
 
   @Get('express')
@@ -41,7 +44,7 @@ export class CoffeesController {
   } */
 
   @Post()
-  @HttpCode(HttpStatus.GONE)
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() createCoffeeDto: CreateCoffeeDto) {
     // return body;
     // return `This action creates a coffee`;
